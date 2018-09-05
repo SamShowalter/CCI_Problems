@@ -101,10 +101,57 @@ class CCI_Array_Probs
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//URLify
 
-	// public static char[] URLify(String s, int num)
-	// {
+	public static String alignleft(String s)
+	{
+		int spaceCount = 0;
 
-	// }
+		while (s.charAt(spaceCount) == ' ')
+		{
+			spaceCount++;
+		}
+
+		String finalS = s.substring(spaceCount);
+
+		for (int i = 0; i < spaceCount; i ++)
+		{
+			finalS += " ";
+		}
+
+		return finalS;
+	}
+
+	//URLify main method
+	public static String URLify(String s, int trueLength)
+	{
+		int shiftVal = s.length() - trueLength - 1;
+		int numSpaces = shiftVal / 2;
+		char[] sChar = s.toCharArray();
+		int i = trueLength - 1;
+
+		while (i >= 0)
+		{
+			if (sChar[i] != ' ')
+			{
+				sChar[i + shiftVal  + 1] = sChar[i];
+				i--;
+			}
+				
+
+			else
+			{
+				sChar[i + shiftVal + 1] = '0';
+				sChar[i + shiftVal] = '2';
+				sChar[i + shiftVal - 1] = '%';
+				shiftVal -= 2;
+				i--;
+			}
+
+			System.out.println(String.valueOf(sChar));
+				
+		}
+
+		return String.valueOf(sChar);
+	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Is the String a permutation of a palindrome
@@ -203,6 +250,48 @@ class CCI_Array_Probs
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Rotate matrix
 
+	public static void transpose(int[][] matrix)
+	{
+		for (int i = 0; i < matrix.length; i ++)
+		{
+			for (int j = i; j < matrix[0].length; j++)
+			{
+				int temp = matrix[i][j];
+				matrix[i][j] = matrix[j][i];
+				matrix[j][i] = temp;
+			}
+		}
+	}
+
+	//Flip elements column-wise, then take transpose
+	public static void rotateMatrix(int[][] matrix)
+	{
+		int partition = matrix.length / 2;
+
+		matrixToString(matrix);
+		System.out.println();
+		//Flip matrix elements
+		for (int i = 0; i < partition; i ++)
+		{
+			for (int j = 0; j < matrix[0].length; j++)
+			{
+				int temp = matrix[i][j];
+				matrix[i][j] = matrix[matrix.length - i - 1][j];
+				matrix[matrix.length - i - 1][j] = temp;
+			}
+		}
+
+		matrixToString(matrix);
+
+		transpose(matrix);
+		System.out.println();
+
+		matrixToString(matrix);
+
+
+		
+		
+	}
 
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -272,6 +361,44 @@ class CCI_Array_Probs
 
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Determine if it isRotation using one call to substring
+
+	//Determine if something is a substring
+	public static boolean isSubstring(String s, String sub)
+	{
+
+		if (sub.length() > s.length() || sub.length() == 0)
+		{
+			return false;
+		}
+			
+		
+		for (int i = 0; i < s.length() - sub.length() + 1; i++)
+		{
+
+			if (s.substring(i, i + sub.length()).equals(sub))
+				return true;
+		}
+
+		return false;
+	}
+
+	public static boolean isRotation(String s1, String rotS)
+	{
+		if (s1.length() == 0 || rotS.length() == 0)
+			return false;
+
+		if (s1.length() == rotS.length())
+		{
+			String s1s1 = s1 + s1;
+			return isSubstring(s1s1, rotS); 
+		}
+
+		return false;
+
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public static void main(String[] args)
 	{
 		int[][] arr = {{1,2,5,6,7,8,5,3,2,1,0,6,3},
@@ -281,10 +408,25 @@ class CCI_Array_Probs
 						{1,2,5,6,0,8,5,3,2,1,3,6,3},
 						{1,2,5,6,7,8,5,3,2,1,3,6,3},
 						{1,2,5,6,7,8,5,3,0,1,3,6,3}};
-		zeroMatrix(arr);
+		// zeroMatrix(arr);
 
-		String a = "pale";
-		String b = "bake";
+		// String a = "pale";
+		// String b = "bake";
+
+		int[][] arrSmall = {{1,2,3},
+							{4,5,6},
+							{7,8,9}};
+
+		//String s = "          a b c d e f";
+		//System.out.println(URLify(s, 11));
+
+		String st = "     Sam Show";
+		System.out.println(alignleft(st));
+
+		//rotateMatrix(arrSmall);
+
+		//System.out.println(isSubstring("SasdaasdSamuelSatm", "Sam"));
+		//System.out.println(isRotation("waterbottlettle", "erbottlewat"));
 
 		//System.out.println(oneAway(a,b));
 
