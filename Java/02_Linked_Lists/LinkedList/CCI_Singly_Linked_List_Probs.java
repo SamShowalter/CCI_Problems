@@ -146,7 +146,7 @@ class CCI_Singly_Linked_List_Probs
 
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// 5.
+	// 5. Sum two lists based on their linked list values
 
 	public static Node sumLists(Node l1, Node l2, int carry)
 	{
@@ -175,22 +175,131 @@ class CCI_Singly_Linked_List_Probs
 		}
 
 		return n;
-
 	}
 
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// 6.
+	// 6. Palindrome linked list
+
+	public static boolean isEvenLength(SinglyLinkedList lst)
+	{
+		int count = 0;
+		Node runner = lst.start;
+
+		if (lst == null)
+			return false;
+
+		while(runner != null)
+		{
+			runner = runner.next;
+			count++;
+		}
+
+		return (count % 2 == 0);
+
+	}
+
+	public static Node findMiddle(SinglyLinkedList lst)
+	{
+		Node runner = lst.start;
+		Node skipper = lst.start;
+
+		while (skipper != null && skipper.next != null)
+		{
+			runner = runner.next;
+			skipper = skipper.next.next;
+		}
+
+		return runner;
+	}
+
+	public static boolean isPalindrome(SinglyLinkedList lst)
+	{
+		boolean isEven = isEvenLength(lst);
+		Node middle = findMiddle(lst);
+		Stack<Integer> stack = new Stack<Integer>();
+		Node runner = lst.start;
+
+		if (lst == null || lst.start.next == null)
+			return true;
+
+		
+
+		while(runner != middle)
+		{
+			stack.push(runner.data);
+			runner = runner.next;
+		}
+
+		if (!isEven)
+			runner = runner.next;
+
+		while(runner != null)
+		{
+			if (runner.data == stack.peek())
+			{
+				stack.pop();
+				runner = runner.next;
+			}
+			else
+				return false;
+
+		}
+
+		return true;
+	}
 
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// 7.
+	// 7. Two singly linked lists have a node that intersect
+
+	public static boolean listIntersect(SinglyLinkedList l1, SinglyLinkedList l2)
+	{
+		HashSet<Node> set = new HashSet<Node>();
+		Node runner = l1.start;
+
+		while(runner != null)
+		{
+			set.add(runner);
+			runner = runner.next;
+		}
+
+		runner = l2.start;
+
+		while (runner != null)
+		{
+			if (set.contains(runner))
+				return true;
+			runner = runner.next;
+		}
+
+		return false;
+	}
 
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// 8.
+	// 8. Contains a loop in the linked list
 
+	public static Node loopStart(SinglyLinkedList l1)
+	{
+		HashSet<Node> set = new HashSet<Node>();
 
+		Node runner = l1.start;
+
+		while (runner != null)
+		{
+			if (set.contains(runner))
+				return runner;
+			else
+			{
+				set.add(runner);
+				runner = runner.next;
+			}
+		}
+
+		return null;
+
+	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 9.
 
@@ -203,14 +312,23 @@ class CCI_Singly_Linked_List_Probs
 
 	public static void main(String[] args)
 	{
+		Node n = new Node(909);
 		SinglyLinkedList list1 = new SinglyLinkedList(4);
 		SinglyLinkedList list2 = new SinglyLinkedList(3);
+		list1.insertStart(n);
+		//list2.insertStart(n);
+		list2.insertStart(909);
 
+		
+
+		list1.insertStart(9);
 		list1.insertStart(7);
+		list1.insertStart(17);
 		list2.insertStart(3);
 		list1.insertStart(9);
 		list1.insertStart(4);
 		list2.insertStart(2);
+		list1.insertStart(n);
 		list2.insertStart(6);
 
 		// list.insertStart(61);
@@ -244,14 +362,16 @@ class CCI_Singly_Linked_List_Probs
 		// moveToEnd(ref, last);
 		// System.out.println(list.toString());
 
-		System.out.println(list1.toString());
+		//System.out.println(isPalindrome(list1));
 		System.out.println(list2.toString());
 
-		System.out.println(list1.start.data);
+		//System.out.println(list1.start.data);
 
-		list1.start = sumLists(list1.start, list2.start, 0);
+		//list1.start = sumLists(list1.start, list2.start, 0);
 
-		System.out.println(list1.toString());
+		System.out.println(loopStart(list1).data);
+
+		//System.out.println(listIntersect(list1,list2));
 
 		
 	}

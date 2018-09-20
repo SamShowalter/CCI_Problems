@@ -52,6 +52,13 @@ class SinglyLinkedList
 		start.next = placeholder;
 	}
 
+	public void insertStart(Node n)
+	{
+		Node placeholder = start;
+		start = n;
+		start.next = placeholder;
+	}
+
 	public void insertFromEnd(int data, int index)
 	{
 		Node runner = start;
